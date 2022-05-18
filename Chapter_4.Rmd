@@ -1,0 +1,481 @@
+---
+title: "The R Book, Chapter 4: Non-numeric values"
+output: html_notebook
+---
+
+**Exercise 4.1**
+
+a.  Store the following vector of 15 values as an object in your workspace: c(6, 9, 7, 3, 6, 7, 9, 6, 3, 6, 6, 7, 1, 9, 1). Identify the following elements:
+
+    ```{r}
+    a <- c(6, 9, 7, 3, 6, 7, 9, 6, 3, 6, 6, 7, 1, 9, 1)
+    a
+
+    ```
+
+    **i.** Those equal to 6
+
+    ```{r}
+    a == 6
+    ```
+
+    Elements 1, 5, 8, 10, and 11 are equal to 6.
+
+    **ii.** Those greater than or equal to 6.
+
+    ```{r}
+    a >= 6
+    ```
+
+Elements 1:3, 5:8, 10:12, and 15 are greater than or equal to 6.
+
+**iii.** Those less than 6 + 2
+
+```{r}
+a < (6 + 2)
+```
+
+Elements 1, 3:6, 8:13, and 15 are less than 6 + 2
+
+**iv.** Those not equal to 6
+
+```{r}
+a != 6
+```
+
+Elements 2:4, 6, 7, 9, and 12:15 are not equal to 6.
+
+**b.** Create a new vector from the one used in (a) by deleting its first three elements.
+
+```{r}
+b <- a[c(4:15)]
+b
+```
+
+With this new vector, fill a 2 x 2 x 3 array.
+
+```{r}
+b.arr <- array(data= b, dim = c(2, 2, 3))
+b.arr
+```
+
+Examine the array for the following entries:
+
+**i.** Those less than or equal to 6 divided by 2, plus 4
+
+```{r}
+b.arr <= 6/2+4
+
+```
+
+Elements (1, , 1), (2, 1, 1) ( , , 2), ( , 1, 3), and (2, 2, 3) are less than or equal to 6 divided by 2, plus 4.
+
+**ii.** Those less than or equal to 6 divided by 2, plus 4, after increasing every element in the array by 2.
+
+```{r}
+(b.arr + 2) <= 6/2 + 4
+```
+
+After increasing all elements of b.arr by 2, elements (1, 1, 1), (2, 1, 2), and (2, , 3) are less than or equal to 6 divided by 2, plus 4.
+
+**c.** Confirm the specific locations of elements equal to 0 in the 10 x 10 identity matrix *I*~10~ (see Section 3.3).
+
+```{r}
+c = diag(x= 10)
+c
+c.logical <- c == 0
+c.logical
+```
+
+**d.** Check whether *any* of the values of the logical arrays created in (b) are TRUE. If they are, check whether they are *all* TRUE.
+
+```{r}
+any(b.arr <= 6/2+4)
+all(b.arr <= 6/2+4)
+
+any((b.arr + 2) <= 6/2 + 4)
+all((b.arr + 2) <= 6/2 + 4)
+```
+
+**e.** By extracting the diagonal elements of the logical matrix created in (c), use any to confirm there are no TRUE entries.
+
+```{r}
+e <- diag(c.logical)
+e
+any(e)
+
+```
+
+**Exercise 4.2** Multiple Comparisons: Logical Operators.
+
+**a.** Store the vector c(7, 1, 7, 10, 5, 9, 10, 3, 10, 8) as foo.
+
+```{r}
+foo <- c(7, 1, 7, 10, 5, 9, 10, 3, 10, 8)
+foo
+```
+
+Identify the elements greater than 5 OR equal to 2
+
+```{r}
+(foo > 5) | (foo == 2)
+```
+
+Elements 1, 3, 4, 6, 7, 9, and 10 of foo are greater than 5 OR equal to 2.
+
+**b.** Store the vector c(8, 8, 4, 4, 5, 1, 5, 6, 6, 8) as bar.
+
+```{r}
+bar <- c(8, 8, 4, 4, 5, 1, 5, 6, 6, 8)
+bar
+```
+
+Identify the elements less than or equal to 6 AND not equal to 4.
+
+```{r}
+(bar <= 6) & (bar != 4)
+```
+
+Elements 5 to 9 of bar are less than or equal to 6 AND not equal to 4.
+
+**c.** Identify the elements that satisfy (a) in foo AND satisfy (b) in bar.
+
+```{r}
+((foo > 5) | (foo == 2)) & ((bar <= 6) & (bar != 4))
+```
+
+In the vectors foo and bar, elements 6, 7, and 9 satisfy conditions of (a) in foo AND conditions of (b) in bar.
+
+**d.** Store a third vector called baz that is equal to the element-wise sum of foo and bar.
+
+```{r}
+baz <- foo + bar
+baz
+```
+
+Determine the following:
+
+**i.** The elements of baz greater than or equal to 14 but not equal to 15
+
+```{r}
+(baz >= 14) & (baz != 15)
+
+```
+
+Elements 4, 9, and 10 of baz are greater than or equal to 14 but are not equal to 15.
+
+**ii.** The elements of the vector obtained via an element-wise division of baz by foo that are greater than 4 OR less than or equal to 2.
+
+```{r}
+((baz/ foo) > 4) | ((baz/ foo) <= 2)
+
+```
+
+Elements 2 to 7, 9 and 10 of the vector obtained by element-wise division of baz by foo are greater than 4 or less than or equal to 2.
+
+**e.** Confirm that using the long version in all of the preceding exercises performs only the first comparison (that is, the results each match the first entries of the previously obtained vectors.
+
+```{r}
+# from (a):
+#short:
+(foo > 5) | (foo == 2)
+#long
+(foo > 5) || (foo == 2)
+```
+
+```{r}
+# from (b):
+#short:
+(bar <= 6) & (bar != 4)
+#long
+(bar <= 6) && (bar != 4)
+```
+
+```{r}
+#from (c)
+#short:
+((foo > 5) | (foo == 2)) & ((bar <= 6) & (bar != 4))
+#long:
+((foo > 5) | (foo == 2)) && ((bar <= 6) & (bar != 4))
+```
+
+```{r}
+# from (di):
+# short
+(baz >= 14) & (baz != 15)
+# long
+(baz >= 14) && (baz != 15)
+```
+
+```{r}
+# from (dii):
+# short
+((baz/ foo) > 4) | ((baz/ foo) <= 2)
+# long
+((baz/ foo) > 4) || ((baz/ foo) <= 2)
+```
+
+**Exercise 4.3**
+
+**a.** Store this vector of 10 values: foo \<- c(7, 5, 6, 1, 2, 10, 8, 3, 8, 2).
+
+```{r}
+foo <- c(7, 5, 6, 1, 2, 10, 8, 3, 8, 2)
+foo
+```
+
+Then, do the following:
+
+i.  Extract the elements greater than or equal to 5, storing the result as bar.
+
+```{r}
+bar <- foo[foo >= 5]
+bar
+```
+
+ii. Display the vector containing those elements from foo that remain after omitting all elements that are greater than or equal to 5.
+
+```{r}
+aii <- foo[-which(x= (foo >= 5))]
+aii
+```
+
+**b.** Use bar from (a)(i) to construct a 2 x 3 matrix called baz, filled in a row-wise fashion.
+
+```{r}
+baz <- matrix(data= bar, nrow= 2, ncol= 3, byrow = TRUE)
+baz
+```
+
+Then do the following:
+
+**i.** Replace any elements that are equal to 8 with the *squared* value of the element in row 1, column 2 of baz itself.
+
+```{r}
+baz[baz == 8] <- baz[1, 2]^2
+baz
+```
+
+**ii.** Confirm that *all* values in baz are now less than or equal to 25 AND greater than 4.
+
+```{r}
+all((baz <= 25) & (baz > 4))
+```
+
+**c.** Create a 3 x 2 x 3 array called qux using the following vector of 18 values: c(10, 5, 1, 4, 7, 4, 3, 3, 1, 3, 4, 3, 1, 7, 8, 3, 7, 3).
+
+```{r}
+qux <- array(data= c(10, 5, 1, 4, 7, 4, 3, 3, 1, 3, 4, 3, 1, 7, 8, 3, 7, 3), dim = c(3, 2, 3))
+qux
+```
+
+Then, do the following:
+
+**i.** Identify the dimension-specific index positions of elements that are either 3 OR 4.
+
+```{r}
+which(x=((qux == 3) | (qux == 4)), arr.ind = TRUE)
+```
+
+**ii.** Replace all elements in qux that are less than 3 OR greater than or equal to 7 with the value 100.
+
+```{r}
+qux[(qux < 3) | (qux >= 7)] <- 100
+qux
+```
+
+**d.** Return to foo from (a). Use the vector c(F, T) to extract every second value from foo.
+
+```{r}
+foo
+foo[c(F,T)]
+```
+
+In Section 4.1.4, you saw that in some situations, you can substitute 0 and 1 for TRUE and FALSE. Can you perform the same extraction from foo using the vector c(0, 1)? Why or why not? What does R return in this case?
+
+```{r}
+foo
+foo[c(0, 1)]
+```
+
+No, c(0, 1) cannot be used to replace c(F, T). This is because while T and F are interpreted as 1 and 0 it is not always the case that 1 and 0 are interpreted as T and F. In the case presented here, c(0, 1) is used on a one-dimensional vector and it serves as a list of element positions in that vector. There is no position 0 so that is ignored. Only the element at position 1 in the vector will be returned.
+
+**Exercise 4.4**
+
+**a.** Re-create exactly the following output:
+
+"The quick brown fox
+
+jumped over
+
+the lazy dogs"
+
+```{r}
+cat("\"The quick brown fox\n\tjumped over\n\t\tthe lazy dogs\"")
+```
+
+**b.** Suppose you've stored the values num1 \<- 4 and num2 \<- 0.75.
+
+```{r}
+num1 <- 4
+num2 <- 0.75
+
+```
+
+Write a line of R code that returns the following string:
+
+[1] "The result of multiplying 4 by 0.74 is 3"
+
+Make sure your code produces a string with the correct multiplication result for *any* two numbers stored as num1 and num2.
+
+```{r}
+paste("The result of multiplying", num1, "by", num2, "is", num1 * num2, sep = " ")
+```
+
+**c.** On my local machine, the directory for my work on this book is specified in R as "/Users/*tdavies*/Documents/RBook/". Imagine it is your machine---write a line of code that replaces *tdavies* in this string with your first initial and surname.
+
+```{r}
+directory <- "/Users/tdavies/Documents/RBook/"
+sub(pattern= "tdavies", replacement= "rmelvin", x= directory)
+```
+
+**d.** In section 4.2.4 you stored the following string:
+
+bar \<- "How much wood could a woodchuck chuck"
+
+```{r}
+bar <- "How much wood could a woodchuck chuck"
+bar
+```
+
+i. store a new string by gluing onto bar the words
+
+"If a woodchuck could chuck wood".
+
+```{r}
+bar <- paste(bar, "If a woodchuck could chuck wood")
+bar
+```
+
+**ii.** In the result of (i), replace all instances of *wood* with *metal*.
+
+```{r}
+gsub(pattern = "wood", replacement = "metal", x = bar)
+```
+
+**e.** Store the string "Two 6-packs for \$12.99".
+
+```{r}
+sale <- "Two 6-packs for $12.99"
+sale
+```
+
+Then do the following:
+
+**i.** Use a check for equality to confirm that the substring beginning with character 5 and ending with character 10 is "6-pack.
+
+```{r}
+substr(x= sale, start = 5, stop = 10) == "6-pack"
+```
+
+**ii.** Make it a better deal by changing the price to \$10.99.
+
+```{r}
+substr(x= sale, start = 18, stop = 22) <- "10.99"
+sale
+```
+
+**Exercise 4.5**
+
+The New Zealand government consists of the political parties National, Labour, Greens, and Maori, with several smaller parties labeled as Other. Suppose you asked 20 New Zealanders which of these they identified most with and obtained the following data:
+
+-    There were 12 males and 8 females; the individuals numbered 1, 5-7, 12, and 14-16 were females.
+
+-   The individuals numbered 1, 4, 12, 15, 16, and 19 identified with Labour; no one identified with Maori, the individuals numbered 6, 9, and 11 identified with Greens; 10 and 20 identified with Other; and the rest identified with National.
+
+    **a.** Use your knowledge of vectors (for example, subsetting and overwriting) to create two character vectors: `sex` with entries "M" (male) and "F" (female) and `party` with entries "National", "Labour", "Greens", "Maori", and "Other". Make sure the entries are placed in the correct positions as outlined earlier.
+
+    ```{r}
+    sex <- rep("M", 20)
+    sex[c(1, 5:7, 12, 14:16)] <- "F"
+    party <- rep("National", 20)
+    party[c(1, 4, 12, 15, 16, 19)] <- "Labour"
+    party[c(6, 9, 11)] <- "Greens"
+    party[c(10, 20)] <- "Other"
+    sex
+    party
+    ```
+
+**b.** Create two different factor vectors based on `sex` and `party`.
+
+```{r}
+sex.fac <- factor(x= sex)
+party.fac <- factor(x= party, levels= c("National", "Labour", "Greens", "Maori", "Other"))
+sex.fac
+party.fac
+```
+
+Does it make any sense to use `ordered= TRUE` in either case?
+
+-   No, neither sex or political party have a natural order to them.
+
+How has R appeared to arrange the levels?
+
+-   For `sex`, R has arranged the levels in alphabetical order. For `party`, R has arranged the levels in the order that I typed them in. The difference between the two factors is that I did not type in the levels for `sex` but I did type in the `levels` for party.
+
+**c.** Use factor subsetting to do the following:
+
+-   Return the factor vector of chosen parties for only the male participants.
+
+```{r}
+party.fac[sex.fac == "M"]
+```
+
+-   Return the factor vector of sexes for those who chose National.
+
+```{r}
+sex.fac[party.fac == "National"]
+```
+
+**d.** Another six people joined the survey, with the results c("National", "Maori", "Maori", "Labour", "Greens", "Labour") for the preferred party and c("M", "M", "F", "F", "F", "M") as their sex. Combine these results with the original factors from **(b)**.
+
+```{r}
+new.party <- factor(x=c("National", "Maori", "Maori", "Labour", "Greens", "Labour"), levels = levels(party.fac))
+new.sex <- factor(c("M", "M", "F", "F", "F", "M"), levels = levels(sex.fac))
+new.party
+new.sex
+party.fac <- factor(x=levels(party.fac)[c(party.fac, new.party)])
+sex.fac <- factor(x=levels(sex.fac)[c(sex.fac, new.sex)])
+party.fac
+sex.fac
+```
+
+Suppose you also asked all individuals to state how confident they were that Labour will win more seats in Parliament than National in the next election and to attach a subjective percentage to that confidence. The following 26 results were obtained: 93, 55, 29, 100, 52, 84, 56, 0, 33, 52, 35, 53, 55, 46, 40, 40, 56, 45, 64, 31, 10, 29, 40, 95, 18, 61.
+
+**e.** Create a factor with levels of confidence as follows: Low for percentages [0, 30]; Moderate for percentages (30, 70]; and High for percentages (70, 100].
+
+```{r}
+conf <- c(93, 55, 29, 100, 52, 84, 56, 0, 33, 52, 35, 53, 55, 46, 40, 40, 56, 45, 64, 31, 10, 29, 40, 95, 18, 61)
+br <- c(0, 30, 70, 100)
+conf
+br
+conf.fac <- cut(x= conf, breaks= br, include.lowest = T, labels = c("Low", "Moderate", "High"))
+confidence
+
+```
+
+**f.** From (**e**), extract the levels corresponding to those individuals who originally said they identified with Labour.
+
+```{r}
+conf.fac[party.fac == "Labour"]
+```
+
+Do this also for National.
+
+```{r}
+conf.fac[party.fac == "National"]
+```
+
+What do you notice?
+
+-   I notice that the sentiment that Labour would gain seats in Parliament is higher for people who identify with the Labour party than it is for people who identify with the National party.
